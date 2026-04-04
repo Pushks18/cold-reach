@@ -1,1 +1,32 @@
-<!DOCTYPE html><html><head><title>ColdReach</title></head><body><p>Loading...</p></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ColdReach</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <span class="logo">ColdReach</span>
+    <div class="header-actions">
+      <span id="badge" class="badge">0 found</span>
+      <a href="../settings/settings.html" target="_blank" class="icon-btn" title="Settings">⚙️</a>
+      <a href="../analytics/analytics.html" target="_blank" class="icon-btn" title="Analytics">📊</a>
+    </div>
+  </div>
+
+  <div class="companion-status">
+    <span id="companion-dot" class="dot offline"></span>
+    <span id="companion-label">Checking companion...</span>
+  </div>
+
+  <button id="scrape-btn" class="scrape-btn">Scrape Current Page</button>
+
+  <div class="section-title">Recent Contacts</div>
+  <div id="contacts-list" class="contacts-list">
+    <div class="empty">No contacts yet. Browse job pages to start collecting.</div>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
