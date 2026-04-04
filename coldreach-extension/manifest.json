@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "ColdReach",
+  "version": "1.0.0",
+  "description": "Automatically find recruiter and HR contact info as you browse job pages.",
+  "permissions": ["storage","tabs","activeTab","scripting","alarms","notifications"],
+  "host_permissions": [
+    "https://www.linkedin.com/*","https://linkedin.com/*",
+    "https://*.greenhouse.io/*","https://*.lever.co/*","https://*.workday.com/*",
+    "https://www.indeed.com/*","https://www.glassdoor.com/*","https://www.google.com/*"
+  ],
+  "background": { "service_worker": "background/service-worker.js", "type": "module" },
+  "content_scripts": [
+    { "matches": ["https://www.linkedin.com/in/*","https://linkedin.com/in/*"], "js": ["content/extractor.js","content/linkedin-profile.js"], "run_at": "document_idle" },
+    { "matches": ["https://www.linkedin.com/jobs/*","https://linkedin.com/jobs/*"], "js": ["content/extractor.js","content/linkedin-jobs.js"], "run_at": "document_idle" },
+    { "matches": ["https://*.greenhouse.io/*"], "js": ["content/extractor.js","content/greenhouse.js"], "run_at": "document_idle" },
+    { "matches": ["https://*.lever.co/*"], "js": ["content/extractor.js","content/lever.js"], "run_at": "document_idle" },
+    { "matches": ["https://*.workday.com/*"], "js": ["content/extractor.js","content/workday.js"], "run_at": "document_idle" }
+  ],
+  "action": { "default_popup": "popup/popup.html", "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" } },
+  "options_page": "settings/settings.html",
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" }
+}
