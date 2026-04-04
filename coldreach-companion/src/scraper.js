@@ -2,9 +2,15 @@ const { chromium } = require('playwright');
 
 let browser = null;
 let context = null;
+let currentProfilePath = undefined;
 
 async function getBrowserContext(profilePath) {
+  // If context exists but profile mode changed, close and recreate
+  if (context && currentProfilePath !== profilePath) {
+    await closeBrowser();
+  }
   if (context) return context;
+  currentProfilePath = profilePath;
 
   if (profilePath) {
     // Use real Chrome profile — authenticated sessions (LinkedIn etc.)
@@ -30,6 +36,7 @@ async function newPage(profilePath) {
 async function closeBrowser() {
   if (context) { await context.close(); context = null; }
   if (browser) { await browser.close(); browser = null; }
+  currentProfilePath = undefined;
 }
 
 module.exports = { newPage, closeBrowser };
