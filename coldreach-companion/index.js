@@ -4,7 +4,7 @@ const { createPipeline } = require('./src/pipeline');
 const { startScheduler } = require('./src/scheduler');
 
 const PORT = process.env.PORT || 3333;
-const INTERVAL = parseInt(process.env.SCHEDULER_INTERVAL_MINUTES || '120', 10);
+const INTERVAL = parseInt(process.env.SCHEDULER_INTERVAL_MINUTES, 10) || 120;
 const PROFILE_PATH = process.env.CHROME_PROFILE_PATH || null;
 
 async function main() {

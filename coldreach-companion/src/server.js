@@ -1,11 +1,12 @@
 const express = require('express');
+const { version } = require('../package.json');
 
 function createServer({ pipeline }) {
   const app = express();
   app.use(express.json());
 
   app.get('/status', (_req, res) => {
-    res.json({ status: 'ok', version: '1.0.0' });
+    res.json({ status: 'ok', version });
   });
 
   app.post('/scrape', async (req, res) => {
