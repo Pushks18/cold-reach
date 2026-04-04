@@ -1,0 +1,5 @@
+# OS
+.DS_Store
+
+# User credentials (never commit)
+# Settings are stored in chrome.storage, not files
