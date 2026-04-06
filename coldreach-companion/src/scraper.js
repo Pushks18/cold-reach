@@ -13,10 +13,11 @@ async function getBrowserContext(profilePath) {
   currentProfilePath = profilePath;
 
   if (profilePath) {
-    // Use real Chrome profile — authenticated sessions (LinkedIn etc.)
+    // Use real Chrome (not Playwright's Chromium) with existing logged-in profile
     context = await chromium.launchPersistentContext(profilePath, {
+      channel: 'chrome',   // use system Chrome binary, not bundled Chromium
       headless: false,
-      args: ['--no-sandbox'],
+      args: ['--no-sandbox', '--disable-blink-features=AutomationControlled'],
     });
   } else {
     browser = await chromium.launch({ headless: true });

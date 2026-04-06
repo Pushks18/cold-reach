@@ -23,16 +23,24 @@ async function checkCompanion() {
 }
 
 async function loadContacts() {
-  const contacts = await getRecentContacts(15);
   const list = document.getElementById('contacts-list');
-  if (!contacts.length) return;
-  list.innerHTML = contacts.map(c => `
-    <div class="contact-item">
-      <div class="contact-name">${c.name || '—'}</div>
-      <div class="contact-meta">${[c.title, c.companies?.name].filter(Boolean).join(' · ') || '—'}</div>
-      ${c.email ? `<div class="contact-email">${c.email}${c.email_verified ? ' <span class="verified">✓</span>' : ''}</div>` : ''}
-    </div>
-  `).join('');
+  try {
+    const contacts = await getRecentContacts(15);
+    if (!contacts.length) return;
+    list.innerHTML = contacts.map(c => `
+      <div class="contact-item">
+        <div class="contact-name">${c.name || '—'}</div>
+        <div class="contact-meta">${[c.title, c.companies?.name].filter(Boolean).join(' · ') || '—'}</div>
+        ${c.email ? `<div class="contact-email">${c.email}${c.email_verified ? ' <span class="verified">✓</span>' : ''}</div>` : ''}
+      </div>
+    `).join('');
+  } catch (err) {
+    if (err.message.includes('credentials not configured')) {
+      list.innerHTML = '<div class="empty">Open ⚙️ Settings and enter your Supabase URL + Anon Key, then save.</div>';
+    } else {
+      console.error('[popup] loadContacts failed:', err.message);
+    }
+  }
 }
 
 document.getElementById('scrape-btn').addEventListener('click', async () => {

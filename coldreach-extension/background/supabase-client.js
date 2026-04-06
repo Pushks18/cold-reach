@@ -1,12 +1,15 @@
-// Uses Supabase JS v2 ESM CDN — no build step required for MV3 service workers
+// Supabase JS v2 — bundled locally (MV3 CSP blocks external CDN imports)
+import { createClient } from '../lib/supabase.js';
+
 let _client = null;
 
 async function getSupabase() {
   if (_client) return _client;
-  const { 'supabase-url': url, 'supabase-key': key } =
-    await chrome.storage.local.get(['supabase-url', 'supabase-key']);
+  const stored = await chrome.storage.local.get(['supabase-url', 'supabase-key']);
+  console.log('[supabase-client] stored keys:', Object.keys(stored), 'url length:', stored['supabase-url']?.length, 'key length:', stored['supabase-key']?.length);
+  const url = stored['supabase-url'];
+  const key = stored['supabase-key'];
   if (!url || !key) throw new Error('Supabase credentials not configured. Open Settings.');
-  const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
   _client = createClient(url, key);
   return _client;
 }

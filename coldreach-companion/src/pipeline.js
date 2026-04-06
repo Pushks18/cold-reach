@@ -1,7 +1,6 @@
-const { generatePatterns } = require('./email-patterns');
-const { verifyBatch } = require('./smtp-verifier');
-const { searchEmails, scrapeUrl } = require('./google-scraper');
+const { scrapeUrl } = require('./google-scraper');
 const { upsertContact, upsertCompany, logScrapeEvent } = require('./deduplicator');
+const { enrichContact } = require('./enrichment');
 
 function extractNameParts(fullName) {
   const parts = (fullName || '').trim().replace(/\s+/g, ' ').split(' ').filter(Boolean);
@@ -15,27 +14,25 @@ async function processContact(rawContact, { profilePath } = {}) {
     company, source, sourceUrl,
   } = rawContact;
 
-  const { first, last } = extractNameParts(name || '');
   let email = rawContact.email || null;
   let emailVerified = false;
 
-  // Step 1: SMTP pattern generation + verification (if no email from DOM)
-  if (!email && first && last && domain) {
-    const patterns = generatePatterns(first, last, domain);
-    const verified = await verifyBatch(patterns);
-    if (verified.length) {
-      email = verified[0];
-      emailVerified = true;
+  // Run full enrichment pipeline if no email yet
+  if (!email && name) {
+    const enriched = await enrichContact({
+      name,
+      company: company || domain,
+      linkedinUrl: linkedin_url,
+      profilePath,
+    });
+    if (enriched?.email) {
+      email = enriched.email;
+      // SMTP-verified emails come from verifyBatch inside enrichment
+      emailVerified = false;
     }
   }
 
-  // Step 2: Google search (if still no email)
-  if (!email && first && last && domain) {
-    const found = await searchEmails(`${first} ${last}`, domain, profilePath);
-    if (found.length) email = found[0];
-  }
-
-  // Step 3: Scrape source URL directly (if provided)
+  // Scrape source URL directly if still no email
   if (!email && sourceUrl) {
     const found = await scrapeUrl(sourceUrl, profilePath);
     if (found.length) email = found[0];
@@ -43,9 +40,9 @@ async function processContact(rawContact, { profilePath } = {}) {
 
   // Upsert company
   let companyId = null;
-  if (company && domain) {
-    const saved = await upsertCompany(company, domain);
-    companyId = saved?.id || null;
+  if (company || domain) {
+    const savedCompany = await upsertCompany(company || domain, domain || null).catch(() => null);
+    companyId = savedCompany?.id || null;
   }
 
   // Upsert contact
@@ -64,9 +61,8 @@ async function processContact(rawContact, { profilePath } = {}) {
 }
 
 async function createPipeline({ profilePath } = {}) {
-  async function run({ urls = [], companies = [] }) {
+  async function run({ urls = [] }) {
     const results = [];
-
     for (const url of urls) {
       const emails = await scrapeUrl(url, profilePath);
       for (const email of emails) {
@@ -75,7 +71,6 @@ async function createPipeline({ profilePath } = {}) {
       }
       await logScrapeEvent('playwright-url', url, emails.length);
     }
-
     return results;
   }
 

@@ -7,7 +7,8 @@
   "host_permissions": [
     "https://www.linkedin.com/*","https://linkedin.com/*",
     "https://*.greenhouse.io/*","https://*.lever.co/*","https://*.workday.com/*",
-    "https://www.indeed.com/*","https://www.glassdoor.com/*","https://www.google.com/*"
+    "https://www.indeed.com/*","https://www.glassdoor.com/*","https://www.google.com/*",
+    "http://localhost/*"
   ],
   "background": { "service_worker": "background/service-worker.js", "type": "module" },
   "content_scripts": [
