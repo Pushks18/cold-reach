@@ -1,0 +1,16 @@
+FROM node:20
+
+# Install Playwright's Chrome dependencies
+RUN npx playwright install-deps chromium
+RUN npx playwright install chromium
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+
+# Create directories
+RUN mkdir -p /app/resumes /app/screenshots /data/chrome-profile
+
+EXPOSE 3333
+CMD ["node", "index.js"]

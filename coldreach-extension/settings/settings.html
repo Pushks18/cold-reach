@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ColdReach Settings</title>
+  <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+  <div class="container">
+    <h1>ColdReach Settings</h1>
+    <section>
+      <h2>Supabase</h2>
+      <label>Project URL<input id="supabase-url" type="text" placeholder="https://xyz.supabase.co"></label>
+      <label>Anon Key<input id="supabase-key" type="password" placeholder="eyJ..."></label>
+    </section>
+    <section>
+      <h2>Scraping</h2>
+      <label class="toggle"><input id="auto-mode" type="checkbox" checked> Auto-scrape when visiting job pages</label>
+      <label>Companion URL<input id="companion-url" type="text" value="http://localhost:3333"></label>
+    </section>
+    <section>
+      <h2>API Keys <span class="optional">(optional — free tier fallbacks)</span></h2>
+      <label>Hunter.io API Key<input id="hunter-key" type="password"></label>
+      <label>Apollo.io API Key<input id="apollo-key" type="password"></label>
+      <label>Snov.io API Key<input id="snov-key" type="password"></label>
+    </section>
+    <section>
+      <h2>Notifications</h2>
+      <label class="toggle"><input id="notify" type="checkbox" checked> Notify when new contact found</label>
+    </section>
+    <button id="save-btn">Save Settings</button>
+    <p id="status-msg"></p>
+  </div>
+  <script src="settings.js"></script>
+</body>
+</html>

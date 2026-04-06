@@ -1,1 +1,25 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build output
+coldreach-dashboard/dist/
+coldreach-extension/lib/supabase.js
+
+# Secrets & personal data
+.env
+*.env.local
+coldreach-companion/profile.json
+coldreach-companion/screenshots/
+coldreach-companion/resumes/*.pdf
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Worktrees
 .worktrees/
+
+# IDE
+.vscode/
+.idea/

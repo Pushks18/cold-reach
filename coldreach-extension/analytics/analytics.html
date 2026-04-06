@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ColdReach Analytics</title>
+  <link rel="stylesheet" href="analytics.css">
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>ColdReach Analytics</h1>
+      <a href="../settings/settings.html" class="settings-link">⚙ Settings</a>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-value" id="total-contacts">—</div><div class="stat-label">Contacts</div></div>
+      <div class="stat-card"><div class="stat-value" id="verified-emails">—</div><div class="stat-label">Verified Emails</div></div>
+      <div class="stat-card"><div class="stat-value" id="total-jobs">—</div><div class="stat-label">Jobs Tracked</div></div>
+      <div class="stat-card"><div class="stat-value" id="applied-jobs">—</div><div class="stat-label">Applied</div></div>
+    </div>
+
+    <div class="section-title">Recent Contacts</div>
+    <div id="contacts-table" class="table-wrap"></div>
+
+    <div class="section-title">Scrape History</div>
+    <div id="scrape-history" class="table-wrap"></div>
+  </div>
+  <script type="module" src="analytics.js"></script>
+</body>
+</html>
